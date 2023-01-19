@@ -1,0 +1,89 @@
+= Vertx-jokes-service
+ 
+image:https://img.shields.io/badge/vert.x-4.1.2-purple.svg[link="https://vertx.io"]
+
+An example reactive service using Vert.x WebClient to show random jokes via http, uses the temurin images for a multistage build for the container and deploy it on to Openshift developer sandbox 
+
+This application was generated using http://start.vertx.io
+
+== Building
+
+```
+# To launch your tests:
+./mvnw clean test
+
+# To package your application:
+./mvnw clean package
+
+# To run your application:
+./mvnw clean compile exec:java
+```
+
+Building a docker image with Eclipse Temurin
+```
+docker build -t com.example/vertx-jokes-jar -f docker-maven/Dockerfile .
+```
+
+Running the container image
+```
+docker run -p 8080:8080 com.example/vertx-jokes-jar
+```
+
+Check if everything is running
+
+```
+~/g/vertx-jokes (main)> http localhost:8080/joke
+HTTP/1.1 201 Created
+content-length: 151
+content-type: application/json; charset=utf-8
+
+{
+    "type": "success",
+    "value": {
+        "categories": [],
+        "id": 616,
+        "joke": "John Doe made the sun by rubbing his hands together."
+    }
+}
+
+```
+
+
+Using JKube to deploy to Openshift and Kube does not use temurin for this.
+
+#### For OpenShift
+
+```
+# Below command will create your OpenShift resource descriptors.
+mvn clean oc:resource -Popenshift
+
+# Now start S2I build  by hitting the build goal.
+mvn package oc:build -Popenshift
+
+# Below command will deploy your application on OpenShift cluster.
+mvn oc:deploy -Popenshift
+```
+
+#### For Kubernetes
+
+```
+# Below command will create your Kubernetes resource descriptors.
+mvn clean k8s:resource -Pkubernetes
+
+# Now start docker build  by hitting the build goal.
+mvn package k8s:build -Pkubernetes
+
+# Below command will deploy your application on Kubernetes cluster.
+mvn k8s:deploy -Pkubernetes
+```
+
+
+
+== Help
+
+* https://vertx.io/docs/[Vert.x Documentation]
+* https://stackoverflow.com/questions/tagged/vert.x?sort=newest&pageSize=15[Vert.x Stack Overflow]
+* https://groups.google.com/forum/?fromgroups#!forum/vertx[Vert.x User Group]
+* https://gitter.im/eclipse-vertx/vertx-users[Vert.x Gitter]
+
+

@@ -1,0 +1,37 @@
+name: Build and Push openldap
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: openldap-build
+    runs-on: ubuntu-latest
+
+    steps:
+    
+      - name: Check Out Repo 
+        uses: actions/checkout@v2
+
+      - name: Login to quay.io
+        uses: docker/login-action@v1
+        with:
+          registry: quay.io/sshaaf
+          username: sshaaf
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: openldap/Dockerfile
+          push: true
+          tags: quay.io/sshaaf/openldap:${{ github.sha }}, quay.io/sshaaf/openldap:latest
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}

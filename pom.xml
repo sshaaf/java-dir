@@ -11,6 +11,9 @@
 
     <modules>
         <module>quarkus-fileupload</module>
+        <module>jboss-iot-example</module>
+        <module>vertx-jokes-service</module>
+        <module>quarkus-opencv</module>
     </modules>
 
 </project>

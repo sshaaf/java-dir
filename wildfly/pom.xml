@@ -5,14 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.acme</groupId>
-    <artifactId>java-playground</artifactId>
+    <artifactId>wildfly-playground</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>vertx</module>
-        <module>wildfly</module>
-        <module>quarkus</module>
+        <module>iot-example</module>
     </modules>
 
 </project>

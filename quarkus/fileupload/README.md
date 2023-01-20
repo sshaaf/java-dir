@@ -18,9 +18,6 @@ To run tailwind while in dev mode
 java-fileupload-example/src/main/resources/META-INF/resources>  npx tailwindcss -i ./input.css -o ./output.css --watch 
 ``` 
 
-
-
-
 ## Packaging and running the application
 
 The application can be packaged using:

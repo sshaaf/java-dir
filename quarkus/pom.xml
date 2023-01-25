@@ -12,6 +12,7 @@
     <modules>
         <module>fileupload</module>
         <module>opencv</module>
+        <module>crud-oidc</module>
     </modules>
 
 </project>

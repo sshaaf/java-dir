@@ -20,7 +20,7 @@ public class BookResource {
         return Book.listAll();
 
     }
-    
+
     @GET
     @Path("/{isbn}")
     @RolesAllowed("user")
@@ -42,7 +42,7 @@ public class BookResource {
         return Response.status(Response.Status.CREATED).entity(item).build();
     }
 
-    @PATCH
+    @PUT
     @Path("/{id}")
     @RolesAllowed("admin")
     @NoCache

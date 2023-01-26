@@ -11,7 +11,6 @@ import {
 import Keycloak from 'keycloak-js';
 
 // Routing to the different screens
-
 const App = () => {
     const [books, setBooks] = useState([])
     useEffect(()=>{
@@ -26,7 +25,9 @@ const App = () => {
     
     
     if (keycloak) {
-            if (authenticated) return ( 
+            if (authenticated) {
+                window.accessToken = keycloak.token;
+            return ( 
             <Router>
                 <Switch>
                     <Route exact path='/books'>
@@ -44,6 +45,7 @@ const App = () => {
                 </Switch>
             </Router>
         );
+    }
         else return (<div className='my-12'>Unable to initiate auth!</div>)
     }
     return(

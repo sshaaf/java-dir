@@ -10,6 +10,9 @@
   - POST -> create,
   - PUT /isbn -> update
 
+oc new-build --name books-frontend --binary --strategy source --image-stream openshift/nodejs:16-ubi8-minimal
+
+
 
 -----------------------
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .

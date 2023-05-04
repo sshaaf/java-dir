@@ -61,13 +61,33 @@ public class DeviceServlet extends HttpServlet {
         out.write("<h1>Quickstart: Example demonstrates the use of <strong>JMS 2.0</strong> and <strong>EJB 3.2 Message-Driven Bean</strong> in JBoss EAP.</h1>");
         try {
             boolean useTopic = req.getParameterMap().keySet().contains("topic");
-
+            int msg = MSG_COUNT;
+            if (req.getParameterMap().keySet().contains("msg")) {
+                msg = Integer.parseInt(req.getParameter("msg"));
+            }
+            int interval = 250;
+            if (req.getParameterMap().keySet().contains("interval")) {
+                interval = Integer.parseInt(req.getParameter("interval"));
+            }
             out.write("<p>Sending messages to <em>" + destination + "</em></p>");
             out.write("<h2>The following messages will be sent to the destination:</h2>");
-            for (int i = 0; i < MSG_COUNT; i++) {
+            for (int i = 0; i < msg; i++) {
+                try {
+                    Thread.sleep(interval);
+                } catch (InterruptedException e) {}
                 String text = "This is message " + (i + 1);
-                context.createProducer().send(destination, homeFactory.getNextRandomHome());
-                out.write("Message (" + i + "): " + text + "</br>");
+                String home = homeFactory.getNextRandomHome();
+                try {
+                    context.createProducer().send(destination, home);
+                    out.write("Message (" + i + "): " + text + "</br>");
+                } catch (javax.jms.JMSRuntimeException exception) {
+                    out.write("EXCEPTION CAUGHT: " + exception.getMessage() + "</br>");
+                    out.write("retrying...</br>");
+                    context.createProducer().send(destination, home);
+                    out.write("Message (" + i + "): " + text + "</br>");
+                    out.write("continuing...</br>");
+                    continue;
+                }
             }
             out.write("<p><i>Go to your JBoss EAP server console or server log to see the result of messages processing.</i></p>");
         } finally {
